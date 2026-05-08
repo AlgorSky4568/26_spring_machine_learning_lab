@@ -1,5 +1,3 @@
-LABEL_COL = 'revenue'
-import math
 def calc_entropy(data, label=LABEL_COL):
     rows = data.shape[0]
     if rows == 0: return 0.0
@@ -31,6 +29,7 @@ def build_tree(data, features, label=LABEL_COL, max_depth=None, current_depth=0)
 
     if data[label].nunique() == 1:
         return data[label].iloc[0]
+
     if not features:
         return majority
 
@@ -58,8 +57,6 @@ def build_tree(data, features, label=LABEL_COL, max_depth=None, current_depth=0)
         subset = data[data[best_feature] == value]
         if len(subset) == 0:
             tree['children'][value] = majority
-        elif len(subset) == 1: #表示D3算法不能再分了，就是叶子节点了
-            pass
         else:
             tree['children'][value] = build_tree(subset,remaining_feature,label,max_depth,current_depth+1)
 
